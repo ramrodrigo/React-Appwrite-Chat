@@ -26,7 +26,38 @@ export default function Chat() {
 					<img src='./info.png' alt='' />
 				</div>
 			</div>
-			<div className='center'></div>
+			<div className='center'>
+				<div className='message own'>
+					<div className='texts'>
+						<p>
+							Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						</p>
+						<span>1 min ago</span>
+					</div>
+				</div>
+				<div className='message'>
+					<img src='./avatar.png' alt='' />
+					<div className='texts'>
+						<img src='https://images.unsplash.com/photo-1713627242674-db55a2ba7cee?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' />
+						<p>
+							Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						</p>
+						<span>1 min ago</span>
+					</div>
+				</div>
+				<div className='message own'>
+					<div className='texts'>
+						<img
+							src='https://images.unsplash.com/photo-1713260859076-c62da46dcf3b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+							alt=''
+						/>
+						<p>
+							Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						</p>
+						<span>1 min ago</span>
+					</div>
+				</div>
+			</div>
 			<div className='bottom'>
 				<div className='icons'>
 					<img src='./img.png' alt='' />
