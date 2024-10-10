@@ -2,11 +2,12 @@ import './detail.css';
 import { useUser } from '../../lib/context/user';
 
 export default function Detail() {
-	const user = useUser();
+	const logout = useUser();
+
 	const handleLogout = async () => {
 		try {
 			// Log the user out
-			await user.logout();
+			await logout();
 			// Redirect to the login page after successful logout
 			window.location.replace('/login');
 		} catch (error) {
