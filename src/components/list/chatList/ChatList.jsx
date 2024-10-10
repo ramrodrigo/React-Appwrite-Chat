@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './chatList.css';
+import AddUser from './addUser/AddUser';
 
 export default function ChatList() {
 	const [addMode, setAddMode] = useState(false);
@@ -19,19 +20,26 @@ export default function ChatList() {
 			</div>
 			<div className='item'>
 				<img src='./avatar.png' alt='' />
-				<div className='texts'>Jane Doe</div>
-				<p>Hello!</p>
+				<div className='texts'>
+					<span>Jane Doe</span>
+					<p>Hello!</p>
+				</div>
 			</div>
 			<div className='item'>
 				<img src='./avatar.png' alt='' />
-				<div className='texts'>Jane Doe</div>
-				<p>Hello!</p>
+				<div className='texts'>
+					<span>Jane Doe</span>
+					<p>Hello!</p>
+				</div>
 			</div>
 			<div className='item'>
 				<img src='./avatar.png' alt='' />
-				<div className='texts'>Jane Doe</div>
-				<p>Hello!</p>
+				<div className='texts'>
+					<span>Jane Doe</span>
+					<p>Hello!</p>
+				</div>
 			</div>
+			{addMode && <AddUser />}
 		</div>
 	);
 }

@@ -22,7 +22,7 @@ body {
 	width: 90vw;
 	display: flex;
 	/* From https://css.glass */
-	background: rgba(172, 172, 172, 0.219);
+	background: rgba(68, 67, 67, 0.37);
 	border-radius: 16px;
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 	backdrop-filter: blur(20px);
