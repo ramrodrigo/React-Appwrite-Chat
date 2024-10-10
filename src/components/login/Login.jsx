@@ -1,5 +1,7 @@
+/* eslint-disable no-undef */
 import { useState } from 'react';
 import './login.css';
+import { toast, Bounce } from 'react-toastify';
 
 export default function Login() {
 	const [avatar, setAvatar] = useState({
@@ -17,14 +19,31 @@ export default function Login() {
 			});
 		}
 	};
+
+	const handleLogin = (e) => {
+		e.preventDefault();
+		toast.success('🦄 Wow so easy!', {
+			position: 'bottom-right',
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: 'light',
+			transition: Bounce,
+		});
+	};
+
 	return (
 		<div className='login'>
 			<div className='item'>
 				<h2>Welcome back,</h2>
-				<form>
+				<form onSubmit={handleLogin}>
 					<input type='text' placeholder='Email' name='email' />
 					<input type='password' placeholder='Password' name='password' />
-					<button disabled={loading}>{loading ? 'Loading' : 'Sign In'}</button>
+					{/* <button disabled={loading}>{loading ? 'Loading' : 'Sign In'}</button> */}
+					<button>Sign In</button>
 				</form>
 			</div>
 			<div className='separator'></div>
