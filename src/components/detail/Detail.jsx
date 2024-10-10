@@ -1,6 +1,19 @@
 import './detail.css';
+import { useUser } from '../../lib/context/user';
 
 export default function Detail() {
+	const user = useUser();
+	const handleLogout = async () => {
+		try {
+			// Log the user out
+			await user.logout();
+			// Redirect to the login page after successful logout
+			window.location.replace('/login');
+		} catch (error) {
+			// Handle any errors during logout
+			console.error('Logout failed:', error);
+		}
+	};
 	return (
 		<div className='detail'>
 			<div className='user'>
@@ -72,7 +85,9 @@ export default function Detail() {
 					</div>
 				</div>
 				<button>Block User</button>
-				<button className='logout'>Logout</button>
+				<button className='logout' onClick={handleLogout}>
+					Logout
+				</button>
 			</div>
 		</div>
 	);
