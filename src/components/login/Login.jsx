@@ -1,9 +1,13 @@
 /* eslint-disable no-undef */
 import { useState } from 'react';
+import { useUser } from '../../lib/context/user';
 import './login.css';
 import { toast, Bounce } from 'react-toastify';
 
 export default function Login() {
+	const user = useUser();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 	const [avatar, setAvatar] = useState({
 		file: null,
 		url: '',
@@ -40,10 +44,33 @@ export default function Login() {
 			<div className='item'>
 				<h2>Welcome back,</h2>
 				<form onSubmit={handleLogin}>
-					<input type='text' placeholder='Email' name='email' />
-					<input type='password' placeholder='Password' name='password' />
-					{/* <button disabled={loading}>{loading ? 'Loading' : 'Sign In'}</button> */}
-					<button>Sign In</button>
+					<input
+						type='email'
+						placeholder='Email'
+						value={email}
+						onChange={(event) => {
+							setEmail(event.target.value);
+						}}
+					/>
+					<input
+						type='password'
+						placeholder='Password'
+						value={password}
+						onChange={(event) => {
+							setPassword(event.target.value);
+						}}
+					/>
+
+					<div>
+						<button
+							className='button'
+							type='button'
+							onClick={() => user.login(email, password)}
+							disabled={loading}
+						>
+							{loading ? 'Loading' : 'Login'}
+						</button>
+					</div>
 				</form>
 			</div>
 			<div className='separator'></div>
@@ -61,9 +88,31 @@ export default function Login() {
 						onChange={handleAvatar}
 					/>
 					<input type='text' placeholder='Username' name='username' />
-					<input type='text' placeholder='Email' name='email' />
-					<input type='password' placeholder='Password' name='password' />
-					<button disabled={loading}>{loading ? 'Loading' : 'Sign Up'}</button>
+					<input
+						type='email'
+						placeholder='Email'
+						value={email}
+						onChange={(event) => {
+							setEmail(event.target.value);
+						}}
+					/>
+					<input
+						type='password'
+						placeholder='Password'
+						value={password}
+						onChange={(event) => {
+							setPassword(event.target.value);
+						}}
+					/>
+
+					<button
+						className='button'
+						type='button'
+						onClick={() => user.register(email, password)}
+						disabled={loading}
+					>
+						{loading ? 'Loading' : 'Register'}
+					</button>
 				</form>
 			</div>
 		</div>
