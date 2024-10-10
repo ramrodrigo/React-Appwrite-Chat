@@ -11,12 +11,12 @@ export function useUser() {
 
 export function UserProvider(props) {
 	const [user, setUser] = useState(null);
-	console.log('username: ', user?.name);
+	// console.log('username: ', user?.name);
 
 	async function login(email, password) {
 		const loggedIn = await account.createEmailPasswordSession(email, password);
 		setUser(loggedIn);
-		window.location.replace('/'); // you can use different redirect method for your application
+		// you can use different redirect method for your application
 	}
 
 	async function logout() {

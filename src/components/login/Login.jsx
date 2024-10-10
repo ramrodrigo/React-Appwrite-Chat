@@ -8,6 +8,8 @@ export default function Login() {
 	const user = useUser();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [emailReg, setEmailReg] = useState('');
+	const [passwordReg, setPasswordReg] = useState('');
 	const [avatar, setAvatar] = useState({
 		file: null,
 		url: '',
@@ -91,24 +93,24 @@ export default function Login() {
 					<input
 						type='email'
 						placeholder='Email'
-						value={email}
+						value={emailReg}
 						onChange={(event) => {
-							setEmail(event.target.value);
+							setEmailReg(event.target.value);
 						}}
 					/>
 					<input
 						type='password'
 						placeholder='Password'
-						value={password}
+						value={passwordReg}
 						onChange={(event) => {
-							setPassword(event.target.value);
+							setPasswordReg(event.target.value);
 						}}
 					/>
 
 					<button
 						className='button'
 						type='button'
-						onClick={() => user.register(email, password)}
+						onClick={() => user.register(emailReg, passwordReg)}
 						disabled={loading}
 					>
 						{loading ? 'Loading' : 'Register'}
