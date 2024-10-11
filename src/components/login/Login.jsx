@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { useUser } from '../../lib/context/user';
 import './login.css';
 import { toast, Bounce } from 'react-toastify';
+import { databases } from '../../lib/appwrite';
+import { ID } from 'appwrite';
 
 export default function Login() {
-	const user = useUser();
+	const { user, login, register } = useUser();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [emailReg, setEmailReg] = useState('');
@@ -14,7 +16,8 @@ export default function Login() {
 		file: null,
 		url: '',
 	});
-
+	const db = import.meta.env.VITE_DB_ID;
+	const collection = import.meta.env.VITE_COLLECTION_ID;
 	const [loading, setLoading] = useState(false);
 
 	const handleAvatar = (e) => {
@@ -26,19 +29,34 @@ export default function Login() {
 		}
 	};
 
-	const handleLogin = (e) => {
+	const handleLogin = async (e) => {
 		e.preventDefault();
-		toast.success('🦄 Wow so easy!', {
-			position: 'bottom-right',
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: 'light',
-			transition: Bounce,
+		setLoading(true);
+		await login(email, password);
+		setLoading(false);
+	};
+
+	const handleRegister = async (e) => {
+		e.preventDefault();
+		const formData = new FormData(e.target);
+		const { email, password, username } = Object.fromEntries(formData);
+		const newUser = await register(email, password);
+		//add user to collection
+		const promise = databases.createDocument(db, collection, ID.unique(), {
+			username: username,
+			email: email,
+			password: password,
+			id: newUser.$id,
 		});
+		promise.then(
+			function (response) {
+				console.log(response);
+			},
+			function (error) {
+				console.log(error);
+			}
+		);
+		// login(email, password);
 	};
 
 	return (
@@ -64,34 +82,28 @@ export default function Login() {
 					/>
 
 					<div>
-						<button
-							className='button'
-							type='button'
-							onClick={() => user.login(email, password)}
-							disabled={loading}
-						>
-							{loading ? 'Loading' : 'Login'}
-						</button>
+						<button disabled={loading}>{loading ? 'Loading' : 'Login'}</button>
 					</div>
 				</form>
 			</div>
 			<div className='separator'></div>
 			<div className='item'>
 				<h2>Create an Account</h2>
-				<form>
+				<form onSubmit={handleRegister}>
 					<label htmlFor='file'>
 						<img src={avatar.url || './avatar.png'} alt='' />
 						Upload an image
 					</label>
 					<input
 						type='file'
-						id='file'
+						id='uploader'
 						style={{ display: 'none' }}
 						onChange={handleAvatar}
 					/>
 					<input type='text' placeholder='Username' name='username' />
 					<input
 						type='email'
+						name='email'
 						placeholder='Email'
 						value={emailReg}
 						onChange={(event) => {
@@ -100,21 +112,14 @@ export default function Login() {
 					/>
 					<input
 						type='password'
+						name='password'
 						placeholder='Password'
 						value={passwordReg}
 						onChange={(event) => {
 							setPasswordReg(event.target.value);
 						}}
 					/>
-
-					<button
-						className='button'
-						type='button'
-						onClick={() => user.register(emailReg, passwordReg)}
-						disabled={loading}
-					>
-						{loading ? 'Loading' : 'Register'}
-					</button>
+					<button disabled={loading}>{loading ? 'Loading' : 'Sign Up'}</button>
 				</form>
 			</div>
 		</div>
