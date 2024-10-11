@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { ID } from 'appwrite';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { account } from '../appwrite';
+import { account, databases } from '../appwrite';
 
 const UserContext = createContext();
 
@@ -11,7 +11,7 @@ export function useUser() {
 
 export function UserProvider(props) {
 	const [user, setUser] = useState(null);
-	// console.log('username: ', user?.name);
+	// console.log('🚀 ~ UserProvider ~ user:', user);
 
 	async function login(email, password) {
 		const loggedIn = await account.createEmailPasswordSession(email, password);
@@ -22,11 +22,13 @@ export function UserProvider(props) {
 	async function logout() {
 		await account.deleteSession('current');
 		setUser(null);
+		console.log('logging out!!!!!!!');
 	}
 
 	async function register(email, password) {
-		await account.create(ID.unique(), email, password);
-		await login(email, password);
+		const newUser = await account.create(ID.unique(), email, password);
+		return newUser;
+		// console.log('🚀 ~ register ~ response:', response.$id);
 	}
 
 	async function init() {

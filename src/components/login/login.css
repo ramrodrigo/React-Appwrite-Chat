@@ -69,3 +69,7 @@
 		background-color: #dddddd35;
 	}
 }
+
+.hidden {
+	display: none;
+}
