@@ -8,7 +8,7 @@ import { ID } from 'appwrite';
 import uploadFile from '../../lib/upload';
 
 export default function Login() {
-	const { user, login, register } = useUser();
+	const { user, login, register, currentUser } = useUser();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [emailReg, setEmailReg] = useState('');
@@ -18,7 +18,9 @@ export default function Login() {
 		url: '',
 	});
 	const db = import.meta.env.VITE_DB_ID;
-	const collection = import.meta.env.VITE_COLLECTION_ID;
+	const collection = import.meta.env.VITE_USERSCOLLECTION_ID;
+	const chat = import.meta.env.VITE_CHATCOLLECTION_ID;
+
 	const [loading, setLoading] = useState(false);
 
 	const handleAvatar = (e) => {
@@ -32,8 +34,15 @@ export default function Login() {
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
-		setLoading(true);
-		await login(email, password);
+
+		try {
+			setLoading(true);
+			await login(email, password);
+			window.location.replace('/');
+		} catch (error) {
+			console.log(error);
+			toast.error('Login failed!');
+		}
 		setLoading(false);
 	};
 
@@ -82,12 +91,13 @@ export default function Login() {
 				}
 			);
 
-			console.log(response);
+			if (response.$id) toast.success('Registered!');
 
 			// Optionally, log in the user after registration
 			// await login(email, password);
 		} catch (error) {
 			console.error(error);
+			toast.error('Registration failed!');
 		}
 	};
 
@@ -113,9 +123,7 @@ export default function Login() {
 						}}
 					/>
 
-					<div>
-						<button disabled={loading}>{loading ? 'Loading' : 'Login'}</button>
-					</div>
+					<button disabled={loading}>{loading ? 'Loading' : 'Login'}</button>
 				</form>
 			</div>
 			<div className='separator'></div>
