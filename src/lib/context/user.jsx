@@ -16,9 +16,10 @@ export function UserProvider(props) {
 
 	async function login(email, password) {
 		const loggedIn = await account.createEmailPasswordSession(email, password);
-		// setUser(loggedIn);
-
-		// window.location.replace('/');
+		setUser(loggedIn);
+		localStorage.setItem('isUserLogged', true);
+		toast.success('You are logged in!');
+		window.location.replace('/');
 
 		// you can use different redirect method for your application
 	}
@@ -29,12 +30,11 @@ export function UserProvider(props) {
 	}
 
 	async function logout() {
+		localStorage.setItem('isUserLogged', false);
 		await account.deleteSession('current');
 		setUser(null);
-		localStorage.setItem('isUserLogged', false);
-		window.location.replace('/');
-		console.log('logging out!!!!!!!');
 		toast.success('Logged out!');
+		window.location.replace('/');
 	}
 
 	async function register(email, password) {
@@ -50,7 +50,9 @@ export function UserProvider(props) {
 		try {
 			const loggedIn = await account.get();
 			if (!loggedIn) return;
-			setUser(loggedIn);
+			if (!user) {
+				setUser(loggedIn);
+			}
 		} catch (err) {
 			setUser(null);
 		}

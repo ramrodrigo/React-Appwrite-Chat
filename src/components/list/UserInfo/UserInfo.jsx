@@ -1,10 +1,14 @@
+import capFirstLetter from '../../../lib/capFirstLetter';
+import { useUserStore } from '../../../lib/userStore';
 import './userInfo.css';
 export default function UserInfo() {
+	const { currentUser } = useUserStore();
+	console.log('🚀 ~ UserInfo ~ currentUser:', currentUser);
 	return (
 		<div className='userInfo'>
 			<div className='user'>
-				<img src='./avatar.png' alt='' />
-				<h2>Jane Doe</h2>
+				<img src={currentUser?.avatar || './avatar.png'} alt='' />
+				<h2>{capFirstLetter(currentUser?.username)}</h2>
 			</div>
 			<div className='icons'>
 				<img src='./more.png' alt='' />

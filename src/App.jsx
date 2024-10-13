@@ -13,6 +13,7 @@ import { useUserStore } from './lib/userStore';
 
 const App = () => {
 	const isUserLogged = localStorage.getItem('isUserLogged') === 'true';
+	// console.log('🚀 ~ App ~ isUserLogged:', isUserLogged);
 
 	const user = useUser();
 	const uid = user?.current?.$id;
@@ -31,7 +32,7 @@ const App = () => {
 		fetchUser();
 	}, [uid]);
 
-	if (!uid && isUserLogged) {
+	if (!uid && isUserLogged && isLoading) {
 		return (
 			<div className='loading'>
 				<span>Loading...</span>

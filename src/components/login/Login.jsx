@@ -37,7 +37,6 @@ export default function Login() {
 			setLoading(true);
 			await login(email, password);
 			e.target.reset();
-			window.location.replace('/');
 		} catch (error) {
 			console.log(error);
 			toast.error('Login failed!');
