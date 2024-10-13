@@ -16,8 +16,6 @@ const uploadFile = async () => {
 
 	try {
 		const response = await storage.createFile(BUCKET, ID.unique(), file);
-		toast.success('File uploaded!');
-		console.log(response.$id); // Log the unique ID of the uploaded file
 		return fileUrl(response.$id); // Return the file URL
 		// console.log(fileUrl(response.$id));
 	} catch (error) {

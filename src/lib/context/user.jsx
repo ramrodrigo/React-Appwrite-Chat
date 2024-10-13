@@ -39,6 +39,9 @@ export function UserProvider(props) {
 
 	async function register(email, password) {
 		const newUser = await account.create(ID.unique(), email, password);
+		if (newUser) {
+			toast.success('New account created.');
+		}
 		return newUser;
 		// console.log('🚀 ~ register ~ response:', response.$id);
 	}
@@ -46,6 +49,7 @@ export function UserProvider(props) {
 	async function init() {
 		try {
 			const loggedIn = await account.get();
+			if (!loggedIn) return;
 			setUser(loggedIn);
 		} catch (err) {
 			setUser(null);

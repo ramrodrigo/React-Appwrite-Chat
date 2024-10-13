@@ -1,26 +1,23 @@
 /* eslint-disable no-undef */
 import { useState } from 'react';
 import { useUser } from '../../lib/context/user';
-import { useUser } from '../../lib/context/user';
+
 import './login.css';
-import { toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { databases } from '../../lib/appwrite';
 import { ID } from 'appwrite';
 import uploadFile from '../../lib/upload';
 
 export default function Login() {
-	const { user, login, register, currentUser } = useUser();
+	const { login, register } = useUser();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [emailReg, setEmailReg] = useState('');
-	const [passwordReg, setPasswordReg] = useState('');
 	const [avatar, setAvatar] = useState({
 		file: null,
 		url: '',
 	});
 	const db = import.meta.env.VITE_DB_ID;
 	const collection = import.meta.env.VITE_USERSCOLLECTION_ID;
-	const chat = import.meta.env.VITE_CHATCOLLECTION_ID;
 
 	const [loading, setLoading] = useState(false);
 
@@ -39,6 +36,7 @@ export default function Login() {
 		try {
 			setLoading(true);
 			await login(email, password);
+			e.target.reset();
 			window.location.replace('/');
 		} catch (error) {
 			console.log(error);
@@ -93,7 +91,9 @@ export default function Login() {
 			);
 
 			if (response.$id) toast.success('Registered!');
-
+			// Reset the form after successful registration
+			e.target.reset();
+			setAvatar({ file: null, url: '' });
 			// Optionally, log in the user after registration
 			// await login(email, password);
 		} catch (error) {
@@ -138,48 +138,12 @@ export default function Login() {
 					<input
 						type='file'
 						id='uploader'
-						id='uploader'
 						style={{ display: 'none' }}
 						onChange={handleAvatar}
 					/>
-
 					<input type='text' placeholder='Username' name='username' />
-					<input
-						type='email'
-						name='email'
-						placeholder='Email'
-						value={emailReg}
-						onChange={(event) => {
-							setEmailReg(event.target.value);
-						}}
-					/>
-					<input
-						type='password'
-						name='password'
-						placeholder='Password'
-						value={passwordReg}
-						onChange={(event) => {
-							setPasswordReg(event.target.value);
-						}}
-					/>
-					<input
-						type='email'
-						name='email'
-						placeholder='Email'
-						value={emailReg}
-						onChange={(event) => {
-							setEmailReg(event.target.value);
-						}}
-					/>
-					<input
-						type='password'
-						name='password'
-						placeholder='Password'
-						value={passwordReg}
-						onChange={(event) => {
-							setPasswordReg(event.target.value);
-						}}
-					/>
+					<input type='email' name='email' placeholder='Email' />
+					<input type='password' name='password' placeholder='Password' />
 					<button disabled={loading}>{loading ? 'Loading' : 'Sign Up'}</button>
 				</form>
 			</div>
