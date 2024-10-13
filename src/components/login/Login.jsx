@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { useState } from 'react';
 import { useUser } from '../../lib/context/user';
+import { useUser } from '../../lib/context/user';
 import './login.css';
 import { toast, Bounce } from 'react-toastify';
 import { databases } from '../../lib/appwrite';
@@ -137,11 +138,30 @@ export default function Login() {
 					<input
 						type='file'
 						id='uploader'
+						id='uploader'
 						style={{ display: 'none' }}
 						onChange={handleAvatar}
 					/>
 
 					<input type='text' placeholder='Username' name='username' />
+					<input
+						type='email'
+						name='email'
+						placeholder='Email'
+						value={emailReg}
+						onChange={(event) => {
+							setEmailReg(event.target.value);
+						}}
+					/>
+					<input
+						type='password'
+						name='password'
+						placeholder='Password'
+						value={passwordReg}
+						onChange={(event) => {
+							setPasswordReg(event.target.value);
+						}}
+					/>
 					<input
 						type='email'
 						name='email'
