@@ -45,11 +45,7 @@ const App = () => {
 					<Route
 						path='/'
 						element={
-							isLoading ? (
-								<div className='loading'>
-									<span>Loading...</span>
-								</div>
-							) : currentUser ? (
+							isUserLogged ? (
 								<>
 									<List />
 									<Chat />

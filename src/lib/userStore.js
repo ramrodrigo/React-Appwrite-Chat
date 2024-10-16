@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { account } from './appwrite';
 import { databases } from './appwrite';
 import { Query } from 'appwrite';
 import { persist } from 'zustand/middleware';

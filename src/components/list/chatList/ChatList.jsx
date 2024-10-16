@@ -57,27 +57,16 @@ export default function ChatList() {
 					onClick={() => setAddMode((prev) => !prev)}
 				/>
 			</div>
-			<div className='item'>
-				<img src='./avatar.png' alt='' />
-				<div className='texts'>
-					<span>Jane Doe</span>
-					<p>Hello!</p>
+
+			{chats.map((chat) => (
+				<div className='item' key={chat + Math.random()}>
+					<img src='./avatar.png' alt='' />
+					<div className='texts'>
+						<span>Jane Doe</span>
+						<p>{chat}</p>
+					</div>
 				</div>
-			</div>
-			<div className='item'>
-				<img src='./avatar.png' alt='' />
-				<div className='texts'>
-					<span>Jane Doe</span>
-					<p>Hello!</p>
-				</div>
-			</div>
-			<div className='item'>
-				<img src='./avatar.png' alt='' />
-				<div className='texts'>
-					<span>Jane Doe</span>
-					<p>Hello!</p>
-				</div>
-			</div>
+			))}
 			{addMode && <AddUser />}
 		</div>
 	);
