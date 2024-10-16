@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { UserProvider } from './lib/context/user';
 import './index.css';
 import Notification from './components/notification/Notification';
 import { useEffect } from 'react';
@@ -12,15 +11,15 @@ import { useUser } from './lib/context/user';
 import { useUserStore } from './lib/userStore';
 
 const App = () => {
+	const { currentUser, isLoading, fetchUserInfo } = useUserStore();
+	// console.log('🚀 ~ App ~ currentUser:', currentUser);
+
 	const isUserLogged = localStorage.getItem('isUserLogged') === 'true';
 	// console.log('🚀 ~ App ~ isUserLogged:', isUserLogged);
 
 	const user = useUser();
 	const uid = user?.current?.$id;
 	// console.log('🚀 ~ App ~ uid:', uid);
-
-	const { currentUser, isLoading, fetchUserInfo } = useUserStore();
-	// console.log('🚀 ~ App ~ currentUser:', currentUser);
 
 	useEffect(() => {
 		// console.log('called useEffect');
@@ -32,13 +31,13 @@ const App = () => {
 		fetchUser();
 	}, [uid]);
 
-	if (!uid && isUserLogged && isLoading) {
-		return (
-			<div className='loading'>
-				<span>Loading...</span>
-			</div>
-		);
-	}
+	// if (isLoading) {
+	// 	return (
+	// 		<div className='loading'>
+	// 			<span>Loading...</span>
+	// 		</div>
+	// 	);
+	// }
 	return (
 		<BrowserRouter>
 			<div className='container'>
@@ -46,7 +45,11 @@ const App = () => {
 					<Route
 						path='/'
 						element={
-							currentUser || isUserLogged ? (
+							isLoading ? (
+								<div className='loading'>
+									<span>Loading...</span>
+								</div>
+							) : currentUser ? (
 								<>
 									<List />
 									<Chat />

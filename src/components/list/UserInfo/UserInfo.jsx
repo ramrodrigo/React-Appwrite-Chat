@@ -3,7 +3,7 @@ import { useUserStore } from '../../../lib/userStore';
 import './userInfo.css';
 export default function UserInfo() {
 	const { currentUser } = useUserStore();
-	console.log('🚀 ~ UserInfo ~ currentUser:', currentUser);
+
 	return (
 		<div className='userInfo'>
 			<div className='user'>

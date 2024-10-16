@@ -3,7 +3,6 @@ import { ID } from 'appwrite';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { account, databases } from '../appwrite';
 import { toast } from 'react-toastify';
-import { useUserStore } from '../userStore';
 
 const UserContext = createContext();
 
@@ -14,19 +13,19 @@ export function useUser() {
 export function UserProvider(props) {
 	const [user, setUser] = useState(null);
 
+	const db = import.meta.env.VITE_DB_ID;
+	const collection = import.meta.env.VITE_USERSCOLLECTION_ID;
+
 	async function login(email, password) {
 		const loggedIn = await account.createEmailPasswordSession(email, password);
 		setUser(loggedIn);
-		localStorage.setItem('isUserLogged', true);
+		if (loggedIn) {
+			localStorage.setItem('isUserLogged', true);
+		}
 		toast.success('You are logged in!');
 		window.location.replace('/');
 
 		// you can use different redirect method for your application
-	}
-
-	async function currentUser() {
-		const result = await account.get();
-		return result;
 	}
 
 	async function logout() {
@@ -37,22 +36,32 @@ export function UserProvider(props) {
 		window.location.replace('/');
 	}
 
-	async function register(email, password) {
+	async function register(email, password, username, url) {
+		//register new user
 		const newUser = await account.create(ID.unique(), email, password);
-		if (newUser) {
-			toast.success('New account created.');
-		}
-		return newUser;
-		// console.log('🚀 ~ register ~ response:', response.$id);
+		//create new user document
+		const response = await databases.createDocument(
+			db,
+			collection,
+			ID.unique(),
+			{
+				username,
+				avatar: url,
+				email,
+				password,
+				id: newUser.$id,
+			}
+		);
+
+		toast.success('New account created.');
+		//login user
+		await login(email, password);
 	}
 
 	async function init() {
 		try {
 			const loggedIn = await account.get();
-			if (!loggedIn) return;
-			if (!user) {
-				setUser(loggedIn);
-			}
+			setUser(loggedIn);
 		} catch (err) {
 			setUser(null);
 		}
@@ -60,11 +69,18 @@ export function UserProvider(props) {
 
 	useEffect(() => {
 		init();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
 		<UserContext.Provider
-			value={{ current: user, setUser, login, logout, register, currentUser }}
+			value={{
+				current: user,
+				setUser,
+				login,
+				logout,
+				register,
+			}}
 		>
 			{props.children}
 		</UserContext.Provider>

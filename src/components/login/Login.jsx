@@ -16,8 +16,6 @@ export default function Login() {
 		file: null,
 		url: '',
 	});
-	const db = import.meta.env.VITE_DB_ID;
-	const collection = import.meta.env.VITE_USERSCOLLECTION_ID;
 
 	const [loading, setLoading] = useState(false);
 
@@ -49,48 +47,21 @@ export default function Login() {
 		try {
 			const formData = new FormData(e.target);
 			const { email, password, username } = Object.fromEntries(formData);
-
 			// Validate email, password, and username
 			if (!email || !password || !username) {
 				throw new Error(
 					'All fields (email, password, username) must be filled out.'
 				);
 			}
-
 			// Upload the avatar file and get the URL
 			const url = await uploadFile();
-
 			// Check if the URL is valid
 			if (!url) {
 				throw new Error('Avatar upload failed, URL is null or undefined.');
 			}
-
 			// Register the user and get the new user data
-			const newUser = await register(email, password);
+			await register(email, password, username, url);
 
-			// Check if newUser is valid
-			if (!newUser || !newUser.$id) {
-				throw new Error(
-					'User registration failed, user data is null or undefined.'
-				);
-			}
-
-			// Add the new user to the collection with the uploaded avatar URL
-			const response = await databases.createDocument(
-				db,
-				collection,
-				ID.unique(),
-				{
-					username: username,
-					avatar: url,
-					email: email,
-					password: password,
-					id: newUser.$id,
-				}
-			);
-
-			if (response.$id) toast.success('Registered!');
-			// Reset the form after successful registration
 			e.target.reset();
 			setAvatar({ file: null, url: '' });
 			// Optionally, log in the user after registration
